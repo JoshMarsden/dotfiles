@@ -1,104 +1,93 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" Author:   Joshua Marsden
+" Email:    joshuamarsdenATgmailDOTcom
+" Location: github.com/JoshMarsden/dotfiles
 
 
+" +------------------------------+
+"     TT  ; TT TT\_/TT TT=\  ;**.
+"     || /  || ||\_/|| ||_/ {|
+"  {} L|/   L| L|   L| L| \  \\_,
+" +------------------------------+
 
 
-
-" Line numbers
-set number
-
-" Turns on syntax highlighting
+" Common Preferred Settings:
+" indentation
+set autoindent ts=4 sw=4 expandtab
+" number line
+set nu
+" coloring
 syntax enable
-
-" Other colorschemes:
 colorscheme elflord
-"colorscheme blue
-"colorscheme desert
-"colorscheme delek
-"colorscheme evening
-"colorscheme morning
-"colorscheme murphy
-"colorscheme darkblue
-"colorscheme koehler
-"colorscheme pablo
-"colorscheme peachpuff
-"colorscheme slate
-
-" Tab settings
-set tabstop=4
-set shiftwidth=4
-set smarttab
-set autoindent
-set expandtab
-
-" Gets rid of those annoying swapfile errors
-" but doesn't save lost work
-set noswapfile
-
-" Set a Visual Bell instead of the audible one
-set vb
-
-" Automatically try to detect filetypes
-filetype on
+""colorscheme slate
+" cool features
+set mouse=a
+"   ^ like allowing mouse clicks to change cursor position
+map <f9> :make<CR>
+"   ^ or map the F9 key to run make
 
 
-" CPP template samples
-map _cpp i#include<iostream><CR><CR>using namespace std;<CR><CR>int main()<CR>{<CR><CR>return 0;<CR>}<UP><UP><ESC>o
-map _math <ESC>o#include<cmath><ESC>
-map _time <ESC>o#include<ctime><ESC>
-" CPP compile commands
-map _run <ESC>:!g++<SPACE>%<SPACE>&&<SPACE>./a.out<CR>
+
+
+" Editor Formatting Per Filetype:
+" NOTE: autocmd depends on the Autocmd plugin being compiled to vim at install
+autocmd Filetype makefile setlocal noexpandtab
+
+" CPP Template:
+" NOTE: '\' (back slash) will continue a line of code
+map _cpp i
+    \/*<CR>
+    \Author:<TAB><TAB>Joshua<SPACE>Marsden<CR>
+    \Email:<TAB><TAB>joshuamarsdenATgmailDOTcom<CR>
+    \Course:<TAB><TAB>CSE<SPACE>...<CR>
+    \Description:<TAB>...<CR>
+    \/<CR>
+    \#include<SPACE><iostream><CR>
+    \//#include<SPACE><cmath><CR>
+    \#include<SPACE><cstdlib><CR>
+    \#include<SPACE><fstream><CR>
+    \#include<SPACE><vector><CR>
+    \<ESC>0xxi<CR>
+    \using namespace std;<CR>
+    \<CR>
+    \int main()<CR>
+    \{<CR>
+    \cout<SPACE><<<SPACE>"Hello<SPACE>World!"<SPACE><<<SPACE>endl;<CR>
+    \// Start coding...<CR>
+    \<ESC>hxxi<TAB><CR>
+    \return 0;<CR>
+    \}<ESC>kkkw
+
+
+" Head Template:
+" The following defines a header file template that dynamically creates
+" an environment variable based on the file.h name.
+"
+" This works by using <C-r>% (Ctrl-R) in vim to grab the current filename, 
+" with which vim commands are used to replace the '.' before the extension 
+" with a '_' to create an acceptable variable name.
+map _head i
+    \#ifndef<SPACE><C-r>%<ESC>br_
+    \yyp0lcwdefine<ESC>
+
+""map _ci :w<CR>:!ci -l %<CR>
+""map _if iif(){<CR>}<ESC><UP>llli
+""map _while iwhile(){<CR>}<ESC><UP>lllllli
+""map _switch iswitch(){<CR>}<ESC><UP>llllllli
+""map _case icase :<CR>break;<ESC>^<UP>lllli
+
+
+" Cool Compile And Build Macros:
+map _run <ESC>:!g++<SPACE>%<SPACE>-o<SPACE>%:r<SPACE>&&<SPACE>./%:r<CR>
+"   ^ Runs command: `g++ <filename>.<ext> -o <filename> && ./<filename>`
 map _gpp <ESC>:!g++<SPACE>%<CR>
+"   ^ Simply checks code validity by trying to compile
 
-map _open <ESC>:e<SPACE>
 
-" Other template samples
-map _php i<?php<CR>?><UP><UP><ESC>o
-" HTML templates
-map _html i<html><CR>  <head><CR></head><CR><body><CR><CR></body><CR><LEFT><LEFT></html><UP><UP>
-map _tb i<input type="text" name="" value=""/><ESC>/name=<CR>lllllli
-map _form i<form><CR><TAB><table border="0"><CR><TAB><tr><CR><TAB><td><CR></td><CR><BS><BS></tr><CR><BS><BS></table><CR><BS><BS></form><ESC>
-" XML template
-map _xml i<?xml version="1.0" encoding="UTF-8"?>
+" Markup And Scripting Languages:
+map _html i<html><CR><head><CR></head><CR><body><CR>
+    \<CR></body><CR><ESC>hi</html><ESC>kk
+map _php i<?php<CR>?><ESC>kko
+""map _xml i<?xml version="1.0" encoding="UTF-8"?>
+""map _form i<form><CR><TAB><table border="0"><CR><TAB><tr><CR><TAB><td><CR></td>
+""    \<CR><BS><BS></tr><CR><BS><BS></table><CR><BS><BS></form><ESC>
+""map _tb i<input type="text" name="" value=""/><ESC>/name=<CR>lllllli
