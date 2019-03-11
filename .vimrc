@@ -1,14 +1,11 @@
-" Author:   Joshua Marsden
-" Email:    joshuamarsdenATgmailDOTcom
-" Location: github.com/JoshMarsden/dotfiles
-
-
 " +------------------------------+
 "     TT  ; TT TT\_/TT TT=\  ;**.
 "     || /  || ||\_/|| ||_/ {|
 "  {} L|/   L| L|   L| L| \  \\_,
 " +------------------------------+
 
+" Load the external plugins.vim file
+"so ~/.vim/plugins.vim
 
 " Common Preferred Settings:
 " indentation
@@ -25,7 +22,20 @@ set mouse=a
 map <f9> :make<CR>
 "   ^ or map the F9 key to run make
 
+"   Hold the bell! It hurts so much
+set visualbell
+set t_vb=
 
+" Ignore case when searching
+set ignorecase
+" Show matching ')' and '}'
+set showmatch
+" Automatically break line if too long
+set wrapscan
+" Color the column to visually see suggested line limit
+set colorcolumn=+0
+" Set max width of text to 76 columns
+set textwidth=80
 
 
 " Editor Formatting Per Filetype:
@@ -37,8 +47,6 @@ autocmd Filetype makefile setlocal noexpandtab
 map _cpp i
     \/*<CR>
     \Author:<TAB><TAB>Joshua<SPACE>Marsden<CR>
-    \Email:<TAB><TAB>joshuamarsdenATgmailDOTcom<CR>
-    \Course:<TAB><TAB>CSE<SPACE>...<CR>
     \Description:<TAB>...<CR>
     \/<CR>
     \#include<SPACE><iostream><CR>
@@ -58,9 +66,9 @@ map _cpp i
     \}<ESC>kkkw
 
 
-" Head Template:
+" Header Template:
 " The following defines a header file template that dynamically creates
-" an environment variable based on the file.h name.
+" an environment variable based on the file.h filename.
 "
 " This works by using <C-r>% (Ctrl-R) in vim to grab the current filename, 
 " with which vim commands are used to replace the '.' before the extension 
